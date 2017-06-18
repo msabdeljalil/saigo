@@ -14,7 +14,7 @@ type TemplateVars struct {
 var homeT = template.Must(template.ParseFiles("exhibit-d/home.html"))
 var v TemplateVars
 
-func home(w http.ResponseWriter, r *http.Request) {
+func home(r *http.Request, w http.ResponseWriter) {
 	homeT.Execute(w, &v)
 }
 
@@ -28,7 +28,7 @@ func addUser(name string) {
 	return
 }
 
-func signup(w http.ResponseWriter, r *http.Request) {
+func signup(r *http.Request, w http.ResponseWriter) {
 	r.ParseForm()
 	username := r.Form.Get("username")
 
