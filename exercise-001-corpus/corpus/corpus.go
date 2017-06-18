@@ -1,0 +1,5 @@
+package corpus
+
+import (
+	"os"
+)
