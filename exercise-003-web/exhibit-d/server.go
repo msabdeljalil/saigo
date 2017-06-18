@@ -6,34 +6,34 @@ import (
 	"net/http"
 )
 
+var homeView = template.Must(template.ParseFiles("exhibit-d/home.html"))
+var template_vars TemplateVars
+
 type TemplateVars struct {
 	nameList map[string]int
 	testy    string
 }
 
-var homeT = template.Must(template.ParseFiles("exhibit-d/home.html"))
-var v TemplateVars
-
-func home(r *http.Request, w http.ResponseWriter) {
-	homeT.Execute(w, &v)
+func home(resp http.ResponseWriter, req *http.Request) {
+	homeView.Execute(resp, &template_vars)
 }
 
 func addUser(name string) {
-	if v.nameList[name] >= 1 {
-		v.nameList[name]++
+	if template_vars.nameList[name] >= 1 {
+		template_vars.nameList[name]++
 	} else {
-		v.nameList = make(map[string]int)
-		v.nameList[name] = 1
+		template_vars.nameList = make(map[string]int)
+		template_vars.nameList[name] = 1
 	}
 	return
 }
 
-func signup(r *http.Request, w http.ResponseWriter) {
-	r.ParseForm()
-	username := r.Form.Get("username")
+func signup(resp http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+	username := req.Form.Get("username")
 
 	addUser(username)
-	http.Redirect(w, r, "/home", http.StatusFound)
+	http.Redirect(resp, req, "/home", http.StatusFound)
 }
 
 func main() {
