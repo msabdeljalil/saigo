@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-type View struct {
+type TemplateVars struct {
 	nameList map[string]int
 	testy    string
 }
 
 var homeT = template.Must(template.ParseFiles("exhibit-d/home.html"))
-var v View
+var v TemplateVars
 
 func home(w http.ResponseWriter, r *http.Request) {
 	homeT.Execute(w, &v)
