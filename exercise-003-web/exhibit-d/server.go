@@ -6,13 +6,12 @@ import (
 	"net/http"
 )
 
-var homeView = template.Must(template.ParseFiles("exhibit-d/home.html"))
-var template_vars TemplateVars
-
 type TemplateVars struct {
 	nameList map[string]int
-	testy    string
 }
+
+var homeView = template.Must(template.ParseFiles("exhibit-d/home.html"))
+var template_vars TemplateVars
 
 func home(resp http.ResponseWriter, req *http.Request) {
 	homeView.Execute(resp, &template_vars)
@@ -34,7 +33,6 @@ func main() {
 	template_vars.nameList = make(map[string]int)
 
 	http.HandleFunc("/", home)
-	http.HandleFunc("/home", home)
 	http.HandleFunc("/signup", signup)
 	http.ListenAndServe(":8080", nil)
 }
