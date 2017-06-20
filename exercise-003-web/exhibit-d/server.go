@@ -18,16 +18,6 @@ func home(resp http.ResponseWriter, req *http.Request) {
 	homeView.Execute(resp, &template_vars)
 }
 
-func addUser(name string) {
-	if template_vars.nameList[name] >= 1 {
-		template_vars.nameList[name]++
-	} else {
-		template_vars.nameList = make(map[string]int)
-		template_vars.nameList[name] = 1
-	}
-	return
-}
-
 func signup(resp http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	username := req.Form.Get("username")
@@ -36,7 +26,13 @@ func signup(resp http.ResponseWriter, req *http.Request) {
 	http.Redirect(resp, req, "/home", http.StatusFound)
 }
 
+func addUser(name string) {
+	template_vars.nameList[name]++
+}
+
 func main() {
+	template_vars.nameList = make(map[string]int)
+
 	http.HandleFunc("/", home)
 	http.HandleFunc("/home", home)
 	http.HandleFunc("/signup", signup)
