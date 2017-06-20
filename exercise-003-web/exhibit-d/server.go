@@ -1,20 +1,18 @@
 package main
 
 import (
-	//"fmt"
 	"html/template"
 	"net/http"
 )
 
-type TemplateVars struct {
-	nameList map[string]int
-}
-
 var homeView = template.Must(template.ParseFiles("exhibit-d/home.html"))
-var template_vars TemplateVars
+var NameList map[string]int = make(map[string]int)
 
 func home(resp http.ResponseWriter, req *http.Request) {
-	homeView.Execute(resp, &template_vars)
+	for k, v := range NameList {
+		println(k, v)
+	}
+	homeView.Execute(resp, NameList)
 }
 
 func signup(resp http.ResponseWriter, req *http.Request) {
@@ -26,12 +24,10 @@ func signup(resp http.ResponseWriter, req *http.Request) {
 }
 
 func addUser(name string) {
-	template_vars.nameList[name]++
+	NameList[name]++
 }
 
 func main() {
-	template_vars.nameList = make(map[string]int)
-
 	http.HandleFunc("/", home)
 	http.HandleFunc("/signup", signup)
 	http.ListenAndServe(":8080", nil)
